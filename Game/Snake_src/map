@@ -1,0 +1,94 @@
+//
+// map.cpp for arcade in /home/benama_m/arcade_test
+//
+// Made by Mahdi Benamar
+// Login   <benama_m@epitech.net>
+//
+// Started on  Sat Mar  4 03:18:11 2017 Mahdi Benamar
+// Last update Sun Apr  9 10:59:52 2017 benamar
+//
+
+#include "snake.h"
+#include "pacman.h"
+//#include "ncurse.h"
+#include "lib_sfml.h"
+#include "lib_opengl.h"
+
+int		lanch_game()
+{
+  Snake		snake;
+  Pacman	pac;
+  Gui		curse; // changer le nom de la classe en lib_ncurses
+  board		game;
+  t_orientation dir;
+  int		k = 0;
+
+  while (k == 0)
+    {
+      if ((dir = curse.get_touch()) == 0)
+	dir = pac.getDir();
+      k = pac.check_move(dir);
+      game = pac.get_board(); // get_info()
+      curse.display(game); //t_info en parametre
+    }
+  endwin();
+  return(0);
+}
+
+int		lanch_sfml()
+{
+  //Snake		snake;
+  Pacman	pac;
+  lib_sf	*sf = new lib_sf;
+  board		game;
+  t_orientation dir;
+  int		k = 0;
+
+  lib_sf sfml = *sf;
+
+  while (sfml.getWindow()->isOpen())
+    {
+      while (k == 0)
+	{
+	  dir = sfml.get_touch();
+	  k = pac.check_move(dir);
+	  game = pac.get_board();
+	  sfml.display(game);
+	}
+      sfml.getWindow()->close();
+    }
+  return(0);
+}
+
+int		lanch_opengl()
+{
+  Snake		snake;
+  Pacman	pac;
+  lib_opengl	op;
+  board		game;
+  t_orientation dir;
+  int		k = 0;
+
+  while (op.getWindow()->isOpen())
+    {
+      while (k == 0)
+	{
+	  dir = op.get_touch();
+	  k = snake.check_move(dir);
+	  game = snake.get_board();
+	  op.display(game);
+	}
+      op.getWindow()->close();
+    }
+  return(0);
+}
+
+int           main(int ac, char **av)
+{
+  (void)ac;
+  (void)av;
+  //lanch_game();
+
+  //lanch_sfml();
+   lanch_opengl();
+}
